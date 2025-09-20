@@ -133,8 +133,5 @@ def saveImage(img, path=""):
 # patchImage creates a region of interest of the given image.
 def patchImage(img, top, bottom, left, right):
     mask = np.zeros_like(img, dtype=bool)
-    if left is None or right is None:
-        mask[top:bottom, :] = True
-    else:
-        mask[top:bottom, left:right] = True
+    mask[top:bottom, left:right] = True
     return mask
