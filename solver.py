@@ -11,7 +11,9 @@ def start():
         # single image processing.
         activateDenoiser(
             NLMeans(),
+            "denoised.png",
             config["EXAMPLE_IMAGE"],
+            config["SAVE_PATH"],
             os.path.join(
                 config["SAVE_PATH"], f"result_{args.h}_{args.small_window_size}_{args.big_window_size}.png"
             )
@@ -43,8 +45,9 @@ def processAllDataset(dataPath="", saveToPath="", saveFigPath=""):
         for imageName in tqdm(os.listdir(os.path.join(dataPath, p)), desc=f"processing directory:{p}"):
             activateDenoiser(
                 denoiser,
+                imageName,
                 os.path.join(dataPath, p, imageName),
-                os.path.join(saveToPath, p, imageName),
+                saveToPath,
                 os.path.join(saveFigPath, imageName)
             )
             processedImageCounter += 1
@@ -53,7 +56,7 @@ def processAllDataset(dataPath="", saveToPath="", saveFigPath=""):
     logger.info(f"{processedImageCounter} images processed. time took: {endTime - startTime}")
 
 
-def activateDenoiser(denoiser, imagePath="", savePath="", saveFigPath=""):
+def activateDenoiser(denoiser, imageSaveName="", imagePath="", savePath="", saveFigPath=""):
     image = readImage(imagePath)
 
     processedImage = solveWithTimer(
@@ -66,7 +69,7 @@ def activateDenoiser(denoiser, imagePath="", savePath="", saveFigPath=""):
 
     if args.save:
         # save path already embedded with the image name.
-        saveImage(processedImage, savePath)
+        saveImage(processedImage, os.path.join(savePath, imageSaveName))
 
     plotWithMetrics(
         originalImage=image,
@@ -98,7 +101,7 @@ def plotWithMetrics(originalImage, processedImage, saveFigPath, plot, defaultFig
     )
 
     logger.info(
-        f"CNRs: original:{cnrOriginal:.2f} denoised:{cnrDenoised:.2f}\n"
+        f"\nCNRs: original:{cnrOriginal:.2f} denoised:{cnrDenoised:.2f}\n"
         f"CVs: original:{cvOriginal:.2f} denoised:{cvDenoised:.2f}"
     )
 
@@ -115,7 +118,7 @@ def plotWithMetrics(originalImage, processedImage, saveFigPath, plot, defaultFig
         f"NLM parameters: h: {args.h} small-win: {args.small_window_size} big-win: {args.big_window_size}"
     )
 
-    if saveFigPath is not None and not "":
+    if saveFigPath is not None and saveFigPath != "":
         plt.savefig(saveFigPath, bbox_inches="tight", dpi=300)
         logger.info(f"plot saved to {saveFigPath}")
 
@@ -138,5 +141,9 @@ args = parseArgs()
 # readYamlConfig uses the default config path related to the project dir.
 config = readYamlConfig()
 if __name__ == "__main__":
+    # prepare result dir.
+    os.makedirs(config["SAVE_PATH"], exist_ok=True)
+    os.makedirs(config["SAVE_FIG_PATH"], exist_ok=True)
+
     # start image-processing using the configurations.
     start()

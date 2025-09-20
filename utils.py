@@ -88,7 +88,6 @@ def parseArgs():
 
 
 def readYamlConfig(path="config.yaml"):
-    logger.info("reading yaml")
     with open(path, encoding="utf-8") as f:
         cfg = yaml.safe_load(f)
 
