@@ -12,7 +12,7 @@ def start():
         activateDenoiser(
             NLMeans(),
             "denoised.png",
-            config["EXAMPLE_IMAGE"],
+            config["SINGLE_IMAGE"],
             config["SAVE_PATH"],
             os.path.join(
                 config["SAVE_PATH"], f"result_{args.h}_{args.small_window_size}_{args.big_window_size}.png"

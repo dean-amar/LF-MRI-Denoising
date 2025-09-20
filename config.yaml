@@ -2,4 +2,4 @@
 DATA_PATH: "dataset"
 SAVE_PATH: "processed_data"
 SAVE_FIG_PATH: "figures"
-EXAMPLE_IMAGE: "sample.png"
+SINGLE_IMAGE: "sample.png"
