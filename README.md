@@ -56,9 +56,7 @@ If `--single=true`, the solver takes the one image specified in `config.yaml.`
 ---
 
 ## 4. Parameter
-You can configure values in config.yaml and override them via CLI flags.
-
-CLI always takes precedence.
+You can configure values in config.yaml and then run the program using the CLI flags.
 
 ### CLI flags
 
@@ -103,6 +101,5 @@ To get the best results from the Non-Local Means denoising:
 - If fine details look blurred, **reduce `h`** or try smaller patch and search windows.  
   This preserves more detail but may leave residual noise.
 
-- Remember that **large search windows (≥70)** provide stronger smoothing but at the cost of significantly slower runtime.  
-  They should be used only when maximum denoising is required and computational time is not a concern.
+- Remember that **large search windows (≥70)** could provide more reliable results but at the cost of significantly slower runtime.
 
